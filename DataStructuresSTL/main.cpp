@@ -7,8 +7,14 @@
 
 #include <iostream>
 
+#include "BenchMarkSetAndUnordSet/BenchmarkSet.hpp"
+#include "Algorithms/Algorithms.hpp"
+#include "Dequeue/Dequeue.h"
+
 int main(int argc, const char * argv[]) {
     // insert code here...
-    std::cout << "Hello, World!\n";
+    //BenchMarkSet::Run();
+    //algorithm::all_of();
+    Dequeue::Run();
     return 0;
 }
