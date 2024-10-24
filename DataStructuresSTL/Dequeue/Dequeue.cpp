@@ -50,9 +50,9 @@ using namespace std;
         }
     }
 
-    void pop_back()
+    void pop_back(int times = 1024)
     {
-        for (int i = 0; i < 1024; ++i)
+        for (int i = 0; i < times; ++i)
         {
             dq.pop_back();
         }
@@ -78,9 +78,9 @@ using namespace std;
         }
     }
 
-    void pop_front()
+    void pop_front(int times = 1024)
     {
-        for (int i = 0; i < 1024; ++i)
+        for (int i = 0; i < times; ++i)
         {
             dq.pop_front();
         }
@@ -138,11 +138,39 @@ using namespace std;
         LOG("-------------- " << __func__ << " -------------------", true);
     }
 
+    void index_operator(int times = 1)
+    {
+        LOG("-------------- " << __func__ << " -------------------", true);
+        PushBackTest();
+        PushFrontTest();
+        dq.shrink_to_fit();
+        LOG(dq[1], true);
+        LOG(dq[1000], true);
+        LOG(dq[2000], true);
+        LOG(dq[3000], true);
+        LOG("-------------- " << __func__ << " -------------------", true);
+    }
+
+    void shrink_to_fit(int times = 1)
+    {
+        LOG("-------------- " << __func__ << " -------------------", true);
+        push_back();
+        push_front();
+        pop_back(512);
+        pop_front(512);
+        LOG("before shrink " << dq.size(), true);
+        dq.shrink_to_fit();
+        LOG("after shrink " << dq.size() ,true);
+        LOG("-------------- " << __func__ << " -------------------", true);
+    }
+
     
 
     void Run()
     {
-        add_both_side_then_pop_both(1);
-        add_both_side_then_pop_both(2);
+        //add_both_side_then_pop_both(1);
+        //add_both_side_then_pop_both(2);
+       // index_operator();
+        shrink_to_fit();
     }
 }
