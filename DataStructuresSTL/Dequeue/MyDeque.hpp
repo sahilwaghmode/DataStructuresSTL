@@ -211,6 +211,44 @@ public:
         }
         
     }
+    
+    reference operator[]( size_type pos )
+    {
+        auto dist_in_first_block = std::distance(_begin_ind, _begin_record->end());
+        if(pos < dist_in_first_block)
+        {
+            return *(_begin_ind + pos);
+        }
+        else
+        {
+            auto dist_in_other_block = pos - dist_in_first_block;
+            auto block_num = dist_in_other_block / _elements_per_book;
+            auto index = dist_in_other_block % _elements_per_book;
+            return _begin_record+block_num[index];
+        }
+    }
+    
+    void shrink_to_fit()
+    {
+        auto num_records = std::distance(_begin_record, _end_record);
+        if(num_records == _book_records.capacity()) return;
+        
+        auto dist_from_begin = std::distance(_book_records.begin(), _begin_record);
+        auto dist_from_end = std::distance(_end_record, _book_records->end());
+        if(dist_from_begin > 0)// we have a gap
+        {
+            auto book_record_itr = _book_records.begin();
+            for(auto itr = _begin_record; itr != _end_record; itr++ , book_record_itr++)
+            {
+                *book_record_itr = std::move(*itr);
+            }
+        }
+        //i have moved the vectors here , will this invalidate thebegin and end indx
+        _book_records.resize(num_records);
+        _begin_record = _book_records.begin();
+        _end_record = _begin_record + num_records - 1;
+        
+    }
 
 private:
     allocator_type _allocator;
